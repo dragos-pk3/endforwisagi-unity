@@ -1,26 +1,31 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody2d;
-    [SerializeField] private float _speed = 5f;
-    private void Awake(){
-        _rigidbody2d = GetComponent<Rigidbody2D>();
-    } 
+    [Header("Movement Settings")]
+    public float moveSpeed = 5f;       // Speed multiplier
+    private Rigidbody2D rb;         
 
+    private Vector2 movement;         // Directional input
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
     void Update()
     {
-        Vector2 inputDirection = GetInput();
-        Move(inputDirection);
+        // Capture raw input (no smoothing)
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        
+        // Assign the directional input to movement vector
+        movement = new Vector2(moveX, moveY).normalized;
     }
 
-    private void Move(Vector2 direction){
-        _rigidbody2d.velocity = direction.normalized * _speed;
-    }
-
-    private Vector2 GetInput(){
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        return new Vector2(horizontal, vertical);
+    void FixedUpdate()
+    {
+        // Move the character
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
