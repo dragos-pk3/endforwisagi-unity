@@ -4,10 +4,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;       // Speed multiplier
+    public float moveSpeed = 5f;     
     private Rigidbody2D rb;         
 
-    private Vector2 movement;         // Directional input
+    private Vector2 movement;        
 
     private void Start()
     {
@@ -15,17 +15,14 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        // Capture raw input (no smoothing)
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
         
-        // Assign the directional input to movement vector
         movement = new Vector2(moveX, moveY).normalized;
     }
 
     void FixedUpdate()
     {
-        // Move the character
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
