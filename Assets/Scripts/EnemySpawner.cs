@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnOffset = 2f;    
     public float spawnInterval = 0.2f;  
     public float enemiesPerWave = 3;
+    public float spawnTimerDelay = 1f;
     
     private Camera mainCamera;
     private int enemiesSpawned = 0;
@@ -14,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        InvokeRepeating(nameof(SpawnEnemy), 1f, spawnInterval); 
+        InvokeRepeating(nameof(SpawnEnemy), spawnTimerDelay, spawnInterval); 
     }
 
     private void SpawnEnemy()
