@@ -1,24 +1,17 @@
 using NUnit.Framework;
 using UnityEngine;
-using System.Collections.Generic
+using System.Collections.Generic;
 public class Player : MonoBehaviour, ISubject
 {
-
+    // REMINDER: 
+    // Subscribe families of/tagged components when certain commands/action take place 
+    // (for example StatIncrease action will subscribe StatUiElements, update them with notification then unsubscribe them!!!!)
+    // Notify the Subscribers
+    // Unsubscribe them
+    // ???
+    // profit
     private List<IObserver> _observers = new List<IObserver>();
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void Attach(IObserver observer)
+    public void Subscribe(IObserver observer)
     {
         if (!_observers.Contains(observer))
         {
@@ -28,7 +21,7 @@ public class Player : MonoBehaviour, ISubject
         }
 
     }
-    public void Detach(IObserver observer)
+    public void Unsubscribe(IObserver observer)
     {
         if(_observers.Contains(observer))
         {
@@ -43,4 +36,5 @@ public class Player : MonoBehaviour, ISubject
             observer.OnNotify(this);
         }
     }
+
 }
