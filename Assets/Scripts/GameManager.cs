@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
                     _instance = manager.AddComponent<GameManager>();
                 }
             }
-
             return _instance;
         }
     }
