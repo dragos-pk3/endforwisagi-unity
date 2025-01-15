@@ -32,6 +32,8 @@ public class PlayerStatsHandler : MonoBehaviour
     private float _movementSpeed;
     private float _iFramesDuration;
     private float _recoveryDelay;
+    [SerializeField]    
+    
     public int MaxHealth
     {
         get => _maxHealth;

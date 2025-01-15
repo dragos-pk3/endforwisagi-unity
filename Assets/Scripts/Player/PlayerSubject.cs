@@ -1,6 +1,5 @@
-using NUnit.Framework;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 public class PlayerSubject : MonoBehaviour, ISubject
 {
     // REMINDER: 

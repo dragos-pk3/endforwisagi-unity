@@ -5,9 +5,12 @@ public class PlayerStateManager : MonoBehaviour
     private StateMachine stateMachine;
 
     [SerializeField]
-    public string CurrentState;
+    public string CurrentStateString;
+
+    public State CurrentState;
     private void Start()
     {
+        Debug.Log("initiated");
         stateMachine = new StateMachine();
         stateMachine.ChangeState(new PlayerIdleState(gameObject));
         GetCurrentState();
@@ -16,7 +19,7 @@ public class PlayerStateManager : MonoBehaviour
     private void Update()
     {
         stateMachine.Update();
-        if (CurrentState != stateMachine.CurrentState.name) GetCurrentState();
+        if (CurrentState != stateMachine.CurrentState) GetCurrentState();
     }
 
     private void FixedUpdate()
@@ -25,6 +28,6 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     public void ChangeState(State state) { stateMachine.ChangeState(state); }
-    public void GetCurrentState() { CurrentState = stateMachine.CurrentState.name; }
+    public void GetCurrentState() { CurrentState = stateMachine.CurrentState; CurrentStateString = stateMachine.CurrentState.name; Debug.Log("Changed"); }
 
 }

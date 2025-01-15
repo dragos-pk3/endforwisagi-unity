@@ -11,7 +11,7 @@ public class PlayerMoveState : State
     public override void Enter()
     {
         rb = owner.GetComponent<Rigidbody2D>();
-
+        Debug.Log($"Entering {name}");
     }
 
     public override void Execute()
@@ -20,7 +20,6 @@ public class PlayerMoveState : State
         float moveY = Input.GetAxisRaw("Vertical");
         movement = new Vector2(moveX, moveY).normalized;
        
-        if(!Input.GetKey(KeyCode.W)) owner.GetComponent<PlayerStateManager>().ChangeState(new PlayerIdleState(owner));
     }
 
     public override void FixedExecute()
