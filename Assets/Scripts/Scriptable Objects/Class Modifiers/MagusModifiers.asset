@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682ae42e3da6bff4db7c30438f60193d, type: 3}
   m_Name: MagusModifiers
   m_EditorClassIdentifier: 
-  className: 
-  statModifiers: []
+  className: Magus
+  statModifiers:
+  - statType: 2
+    value: 1
+  - statType: 0
+    value: -1

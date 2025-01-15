@@ -8,17 +8,20 @@ public class PlayerStateManager : MonoBehaviour
     public string CurrentState;
     private void Start()
     {
-
         stateMachine = new StateMachine();
         stateMachine.ChangeState(new PlayerIdleState(gameObject));
         GetCurrentState();
-
     }
 
     private void Update()
     {
         stateMachine.Update();
         if (CurrentState != stateMachine.CurrentState.name) GetCurrentState();
+    }
+
+    private void FixedUpdate()
+    {
+        stateMachine.FixedUpdate();
     }
 
     public void ChangeState(State state) { stateMachine.ChangeState(state); }

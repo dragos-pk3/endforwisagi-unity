@@ -14,4 +14,9 @@ public class StateMachine
     {
         currentState?.Execute();
     }
+
+    public void FixedUpdate()
+    {
+        currentState?.FixedExecute();
+    }
 }

@@ -5,23 +5,28 @@ public class PlayerMoveState : State
 {
     public PlayerMoveState(GameObject owner) : base(owner) { name = "MOVE"; /*name for Debug only*/ }
 
+    private Rigidbody2D rb;
+    private Vector2 movement;
 
     public override void Enter()
     {
-        // Enter 
+        rb = owner.GetComponent<Rigidbody2D>();
+
     }
 
     public override void Execute()
     {
-        var rb = owner.GetComponent<Rigidbody>();
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-        var movement = new Vector2(moveX, moveY).normalized;
-        //rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        movement = new Vector2(moveX, moveY).normalized;
        
         if(!Input.GetKey(KeyCode.W)) owner.GetComponent<PlayerStateManager>().ChangeState(new PlayerIdleState(owner));
     }
- 
+
+    public override void FixedExecute()
+    {
+        rb.MovePosition(rb.position + movement * owner.GetComponent<PlayerStatsHandler>().MovementSpeed * Time.fixedDeltaTime);
+    }
     public override void Exit()
     {
         // Exit

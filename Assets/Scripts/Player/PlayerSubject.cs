@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-public class Player : MonoBehaviour, ISubject
+public class PlayerSubject : MonoBehaviour, ISubject
 {
     // REMINDER: 
     // Subscribe families of/tagged components when certain commands/action take place 
