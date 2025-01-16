@@ -6,7 +6,6 @@ public class PlayerIdleState : State
     public PlayerIdleState(GameObject owner) : base(owner) { name = "IDLE"; /*name for Debug only*/}
     public override void Enter()
     {
-        Debug.Log($"Entering {name}");
     }
     public override void Execute()
     {
@@ -18,6 +17,5 @@ public class PlayerIdleState : State
 
     public override void Exit()
     {
-        Debug.Log($"Exiting {name}");
     }
 }

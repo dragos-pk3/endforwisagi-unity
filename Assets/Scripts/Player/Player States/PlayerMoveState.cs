@@ -11,7 +11,6 @@ public class PlayerMoveState : State
     public override void Enter()
     {
         rb = owner.GetComponent<Rigidbody2D>();
-        Debug.Log($"Entering {name}");
     }
 
     public override void Execute()
@@ -29,6 +28,5 @@ public class PlayerMoveState : State
     public override void Exit()
     {
         // Exit
-        Debug.Log($"Exiting {name}");
     }
 }
