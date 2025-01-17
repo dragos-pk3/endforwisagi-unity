@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
 
-        
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
         {

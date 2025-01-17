@@ -37,17 +37,10 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to events
-        EventManager.OnAppStart += LaunchApp;
     }
 
     private void OnDisable()
     {
         // Unsubscribe to events
-        EventManager.OnAppStart -= LaunchApp;
-    }
-
-    private void LaunchApp()
-    {
-        Debug.Log("Started");
     }
 }

@@ -3,12 +3,24 @@ using UnityEngine;
 
 public static class EventManager
 {
-    public static event Action OnAppStart;
+    #region Actions
+    public static event Action OnPlayerStatChange;
+    public static event Action<PlayerClass> OnPlayerClassSelection;
+    #endregion
 
+    #region Game Manager Triggers
 
+    #endregion
 
-    public static void AppStart()
+    #region Player Triggers
+    public static void PlayerStatChange()
     {
-        OnAppStart?.Invoke();
+        OnPlayerStatChange?.Invoke();
     }
+
+    public static void PlayerClassSelection(PlayerClass playerClass)
+    {
+        OnPlayerClassSelection?.Invoke(playerClass);
+    }
+    #endregion
 }
