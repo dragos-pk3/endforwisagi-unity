@@ -73,7 +73,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0014515072, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -83,7 +83,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.50358367, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &1334971020778035239
 Rigidbody2D:
@@ -185,6 +185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8364546023515563517}
   - component: {fileID: 575555983785974265}
+  - component: {fileID: 4395990631552205109}
   m_Layer: 0
   m_Name: PlaceholderSquare
   m_TagString: Untagged
@@ -262,3 +263,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4395990631552205109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8060868903592702771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4b6d5ffebd71943ba71094cddece24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blinkDuration: 2
+  blinkInterval: 0.3
+  minAlpha: 0.2
+  maxAlpha: 1
+  damageDuration: 0.1

@@ -10,7 +10,6 @@ public class PlayerStateManager : MonoBehaviour
     public State CurrentState;
     private void Start()
     {
-        Debug.Log("initiated");
         stateMachine = new StateMachine();
         stateMachine.ChangeState(new PlayerIdleState(gameObject));
         GetCurrentState();
@@ -28,6 +27,6 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     public void ChangeState(State state) { stateMachine.ChangeState(state); }
-    public void GetCurrentState() { CurrentState = stateMachine.CurrentState; CurrentStateString = stateMachine.CurrentState.name; Debug.Log("Changed"); }
+    public void GetCurrentState() { CurrentState = stateMachine.CurrentState; CurrentStateString = stateMachine.CurrentState.name; }
 
 }

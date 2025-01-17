@@ -11,6 +11,5 @@ public class DemoObserver : MonoBehaviour, IObserver
     }
     public void OnNotify(ISubject subject)
     {
-        Debug.Log($"I am notified by subject. Reading movement stat:{_stats.MovementSpeed}");
     }
 }

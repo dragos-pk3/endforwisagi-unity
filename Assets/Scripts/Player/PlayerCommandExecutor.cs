@@ -4,15 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerStateManager))]
 public class PlayerCommandExecutor : MonoBehaviour
 {
-    private CommandInvoker _invoker;
     private PlayerStateManager _playerStateManager;
     private PlayerSubject _playerSubject;
-
+    private DemoObserver _observer;
     private void Awake()
     {
-        _invoker = GetComponent<CommandInvoker>();
         _playerStateManager = GetComponent<PlayerStateManager>();
         _playerSubject = GetComponent<PlayerSubject>();
+        _observer = FindFirstObjectByType<DemoObserver>();
+        _playerSubject.Subscribe(_observer);
     }
 
     private void Update()
@@ -23,14 +23,12 @@ public class PlayerCommandExecutor : MonoBehaviour
         {
             if (!(_playerStateManager.CurrentState is PlayerIdleState))
             {
-                ICommand moveCommand = new ChangeStateCommand(
+                ICommand idleCommand = new ChangeStateCommand(
                     _playerStateManager,
                     new PlayerIdleState(gameObject)
                 );
-                _invoker.AddCommand(moveCommand);
+                CommandInvoker.InvokerInstance.AddCommand(idleCommand);
 
-                ICommand notifyCommand = new NotifyObserversCommand(_playerSubject);
-                _invoker.AddCommand(notifyCommand);
             }
         }
         else
@@ -41,10 +39,10 @@ public class PlayerCommandExecutor : MonoBehaviour
                     _playerStateManager,
                     new PlayerMoveState(gameObject)
                 );
-                _invoker.AddCommand(moveCommand);
+                CommandInvoker.InvokerInstance.AddCommand(moveCommand);
 
                 ICommand notifyCommand = new NotifyObserversCommand(_playerSubject);
-                _invoker.AddCommand(notifyCommand);
+                CommandInvoker.InvokerInstance.AddCommand(notifyCommand);
             }
         }
     }
