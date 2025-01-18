@@ -1,9 +1,10 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class Player : Entity
 {
-    BasePlayerData PlayerData = new BasePlayerData();
+    public BasePlayerData PlayerData = new BasePlayerData();
     // load selectedclass
     // add state machine
     // add player controler 
@@ -29,20 +30,22 @@ public class Player : Entity
 
     [SerializeField] public PlayerClass SelectedClass;
 
-    StateMachine StateMachine;
+    StateMachine StateMachine = new StateMachine();
 
-    Dictionary<string, State> States;
+    Dictionary<string, State> States = new Dictionary<string, State>();
 
     [SerializeField]
     public string CurrentStateString; // Just for debugging
 
     public State CurrentState;
-    public Player()
+    public void Start()
     {
        CurrentHealth = MaxHealth;
        CurrentMana = MaxMana;
        PopulateStates();
        EventManager.PlayerClassSelection(SelectedClass);
+       GetCurrentState(); // Debug Line
+        Debug.Log(DictToString(States));
 
     }
 
@@ -71,16 +74,48 @@ public class Player : Entity
         //InvulnerableDuration = PlayerData.BaseInvulnerableDuration.BaseValue + PlayerData.stats[StatType.Agility] * PlayerData.BaseInvulnerableDuration.Multiplier;
     }
     
-    public void ChangeState(State state) { StateMachine.ChangeState(state); }
     public void GetCurrentState() { CurrentState = StateMachine.CurrentState; CurrentStateString = StateMachine.CurrentState.name; } // Just for debugging
     public void PopulateStates()
     {
-        States = new Dictionary<string, State>();
-        //States.Add("Idle", new PlayerIdleState(gameObject));
-        //States.Add("Move", new PlayerMoveState(gameObject));
+        States.Add("IDLE", new PlayerIdleState(gameObject));
+        States.Add("MOVE", new PlayerMoveState(gameObject));
         //States.Add("UseAbility", new PlayerAttackState(gameObject));
         //States.Add("Stun", new PlayerStunState(gameObject));
         //States.Add("Invulnerable", new PlayerInvulnerableState(gameObject));
         //States.Add("Death", new PlayerDeathState(gameObject));
+        StateMachine.ChangeState(States["IDLE"]);
+    }
+
+    private void Update()
+    {
+        if (CurrentState != StateMachine.CurrentState) GetCurrentState();
+
+        if(Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+        {
+            StateMachine.ChangeState(States["IDLE"]);
+        }
+        else
+        {
+            StateMachine.ChangeState(States["MOVE"]);
+        }
+        StateMachine.Update();
+    }
+
+    private void FixedUpdate()
+    {
+        StateMachine.FixedUpdate();
+    }
+
+    public string DictToString(Dictionary<string, State> dict)
+    {
+        string output = "";
+        foreach (KeyValuePair<string, State> kvp in dict)
+        {
+            string key = kvp.Key;
+            object value = kvp.Value;
+            string pair = key + ": " + value.ToString() + "\n";
+            output += pair;
+        }
+        return output;
     }
 }

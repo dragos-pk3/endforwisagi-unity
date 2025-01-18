@@ -19,8 +19,7 @@ public class PlayerClassInitialization : MonoBehaviour
 
     public void InitializePlayerClass(PlayerClass playerClass)
     {
-        SelectedClass = playerClass;
-        switch (SelectedClass)
+        switch (playerClass)
         {
             case PlayerClass.Ninja:
                 break;
