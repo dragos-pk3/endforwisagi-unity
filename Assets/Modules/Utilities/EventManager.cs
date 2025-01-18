@@ -6,6 +6,9 @@ public static class EventManager
     #region Actions
     public static event Action OnPlayerStatChange;
     public static event Action<PlayerClass> OnPlayerClassSelection;
+    public static event Action<int> OnPlayerDamaged;
+    public static event Action OnWeaponHide;
+    public static event Action OnWeaponShow;
     #endregion
 
     #region Game Manager Triggers
@@ -21,6 +24,23 @@ public static class EventManager
     public static void PlayerClassSelection(PlayerClass playerClass)
     {
         OnPlayerClassSelection?.Invoke(playerClass);
+    }
+
+    public static void PlayerDamaged(int damage)
+    {
+        OnPlayerDamaged?.Invoke(damage);
+    }
+    #endregion
+
+    #region Weapon
+    public static void HideWeapon()
+    {
+        OnWeaponHide?.Invoke();
+    }
+
+    public static void ShowWeapon()
+    {
+        OnWeaponShow?.Invoke();
     }
     #endregion
 }

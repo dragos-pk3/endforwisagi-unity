@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private int _health = 3;
     private bool isDamaged = false;
+    private int damage = 10;
     Vector2 direction = Vector2.zero;
     private SpriteManager spriteManager;
     private void Start()
@@ -41,11 +42,13 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.name == "PlayerWeapon")
         {
-            Debug.Log("touch");
             TakeDamage();
+        }
+        if (collision.gameObject.name == "Player")
+        {
+            EventManager.PlayerDamaged(damage);
         }
     }
 

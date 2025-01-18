@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class State
 {
-    protected GameObject owner;
+    protected Player owner;
     public string name = "Unspecified"; // Debug only, delete later
-    protected State(GameObject owner)
+    protected State(Player owner)
     {
         this.owner = owner;
     }

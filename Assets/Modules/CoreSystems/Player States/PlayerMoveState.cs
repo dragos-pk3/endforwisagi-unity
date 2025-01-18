@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMoveState : State
 {
-    public PlayerMoveState(GameObject owner) : base(owner) { name = "MOVE"; /*name for Debug only*/ }
+    public PlayerMoveState(Player owner) : base(owner) { name = "MOVE"; /*name for Debug only*/ }
 
     private Rigidbody2D rb;
     private Vector2 direction;
@@ -23,10 +23,10 @@ public class PlayerMoveState : State
 
     public override void FixedExecute()
     {
-        rb.MovePosition(rb.position + direction * owner.GetComponent<Player>().PlayerData.BaseMovementSpeed.BaseValue * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + direction * owner.PlayerData.BaseMovementSpeed.BaseValue * Time.fixedDeltaTime);
     }
     public override void Exit()
     {
-        Debug.Log($"Exiting {name}");
+
     }
 }

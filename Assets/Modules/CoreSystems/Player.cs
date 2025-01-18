@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class Player : Entity
     public int StatCap { get; private set; }
     public int StatPoints { get; private set; }
     public int MaxHealth { get; set; }
-    public int CurrentHealth { get; set; }
+    [SerializeField] public int CurrentHealth;
     public float DamageResistance { get; set; }
     public int Damage { get; set; }
     public float Knockback { get; set; }
@@ -40,6 +41,8 @@ public class Player : Entity
     public State CurrentState;
     public void Start()
     {
+       MaxHealth = 20;
+       StunDuration = 2f;
        CurrentHealth = MaxHealth;
        CurrentMana = MaxMana;
        PopulateStates();
@@ -52,13 +55,28 @@ public class Player : Entity
     public void OnEnable()
     {
         EventManager.OnPlayerStatChange += UpdateStats; // Call EventManager.PlayerStatChange() to update Stats
+        EventManager.OnPlayerDamaged += TakeDamage;
     }
 
     public void OnDisable()
     {
         EventManager.OnPlayerStatChange -= UpdateStats;
+        EventManager.OnPlayerDamaged -= TakeDamage;
+
     }
 
+    private void TakeDamage(int damage)
+    {
+        if (CurrentHealth > 0) { 
+        CurrentHealth -= damage;
+        StateMachine.ChangeState(States["DAMAGED"]);
+        }
+        else
+        {
+            CurrentHealth = 0;
+            StateMachine.ChangeState(States["DEATH"]);
+        }
+    }
 
     private void UpdateStats()
     {
@@ -74,11 +92,14 @@ public class Player : Entity
         //InvulnerableDuration = PlayerData.BaseInvulnerableDuration.BaseValue + PlayerData.stats[StatType.Agility] * PlayerData.BaseInvulnerableDuration.Multiplier;
     }
     
+    public void ChangeStates(State state) { StateMachine.ChangeState(state); }
     public void GetCurrentState() { CurrentState = StateMachine.CurrentState; CurrentStateString = StateMachine.CurrentState.name; } // Just for debugging
     public void PopulateStates()
     {
-        States.Add("IDLE", new PlayerIdleState(gameObject));
-        States.Add("MOVE", new PlayerMoveState(gameObject));
+        States.Add("IDLE", new PlayerIdleState(this));
+        States.Add("MOVE", new PlayerMoveState(this));
+        States.Add("DAMAGED", new PlayerDamagedState(this));
+        States.Add("DEATH", new PlayerDeathState(this));
         //States.Add("UseAbility", new PlayerAttackState(gameObject));
         //States.Add("Stun", new PlayerStunState(gameObject));
         //States.Add("Invulnerable", new PlayerInvulnerableState(gameObject));
@@ -89,7 +110,7 @@ public class Player : Entity
     private void Update()
     {
         if (CurrentState != StateMachine.CurrentState) GetCurrentState();
-
+        if (CurrentState == States["DAMAGED"]) return;
         if(Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
         {
             StateMachine.ChangeState(States["IDLE"]);
@@ -118,4 +139,6 @@ public class Player : Entity
         }
         return output;
     }
+
+
 }

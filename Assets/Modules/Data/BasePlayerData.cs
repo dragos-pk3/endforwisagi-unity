@@ -40,7 +40,7 @@ public class BasePlayerData
         stats.Add(StatType.Agility, 10);
         
         // Propereties
-        BaseMovementSpeed = new StatProperty<float>(2f, 1f);
+        BaseMovementSpeed = new StatProperty<float>(10f, 1f);
     }
 
 

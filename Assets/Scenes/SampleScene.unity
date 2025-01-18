@@ -604,7 +604,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -795,7 +795,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2616295156306119312, guid: b0f8304c140453441bbb8f11498599e1, type: 3}
   spawnOffset: 1
   spawnInterval: 2
-  enemiesPerWave: 10
+  enemiesPerWave: 40
   spawnTimerDelay: 1
 --- !u!4 &902589171
 Transform:
@@ -1226,6 +1226,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1833378264}
+    - target: {fileID: 8353061100587736246, guid: eb0824668e258804b95be33a9b85840f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8521378975030624105, guid: eb0824668e258804b95be33a9b85840f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1269,6 +1273,10 @@ PrefabInstance:
     - target: {fileID: 8828566882006477889, guid: eb0824668e258804b95be33a9b85840f, type: 3}
       propertyPath: m_Name
       value: PlayerWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828566882006477889, guid: eb0824668e258804b95be33a9b85840f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1380,6 +1388,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4765277995132196786, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
+    - {fileID: 3354403624587577206, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
+    - {fileID: 3382643525545497861, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
+    - {fileID: 1159090112012231118, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
+    - {fileID: 1197991034666847604, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
+    - {fileID: 4484973930910071537, guid: 624d0e457bcf6fb419fa55d20639f264, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
