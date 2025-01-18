@@ -1,5 +1,4 @@
 
-
 public class NotifyObserversCommand : ICommand
 {
     private ISubject _subject;
@@ -12,6 +11,6 @@ public class NotifyObserversCommand : ICommand
     public void Execute()
     {
         _subject.Notify();
-    }
 
+    }
 }

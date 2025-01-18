@@ -27,5 +27,6 @@ public class PlayerMoveState : State
     }
     public override void Exit()
     {
+        Debug.Log($"Exiting {name}");
     }
 }
