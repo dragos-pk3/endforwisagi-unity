@@ -107,30 +107,30 @@ public class PlayerStatsHandler : MonoBehaviour
         currentWisdom = basePlayerStats.wisdom;
         currentAgility = basePlayerStats.agility;
 
-        ApplyClassModifiers();
+        //ApplyClassModifiers();
 
         _movementSpeed = 5f;//debug line
     }
 
-    private void ApplyClassModifiers()
-    {
-        foreach (var modifier in playerClass.statModifiers)
-        {
-            switch (modifier.statType)
-            {
-                case StatType.Endurance:
-                    currentEndurance += modifier.value;
-                    break;
-                case StatType.Force:
-                    currentForce += modifier.value;
-                    break;
-                case StatType.Wisdom:
-                    currentWisdom += modifier.value;
-                    break;
-                case StatType.Agility:
-                    currentAgility += modifier.value;
-                    break;
-            }
-        }
-    }
+    //private void ApplyClassModifiers()
+    //{
+    //    foreach (var modifier in playerClass.statModifiers)
+    //    {
+    //        switch (modifier.statType)
+    //        {
+    //            case StatType.Endurance:
+    //                currentEndurance += modifier.value;
+    //                break;
+    //            case StatType.Force:
+    //                currentForce += modifier.value;
+    //                break;
+    //            case StatType.Wisdom:
+    //                currentWisdom += modifier.value;
+    //                break;
+    //            case StatType.Agility:
+    //                currentAgility += modifier.value;
+    //                break;
+    //        }
+    //    }
+    //}
 }

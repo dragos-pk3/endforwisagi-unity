@@ -34,6 +34,13 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        // Subscribe to events
+    }
 
-
+    private void OnDisable()
+    {
+        // Unsubscribe to events
+    }
 }
