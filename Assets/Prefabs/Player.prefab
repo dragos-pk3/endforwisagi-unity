@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4607037352486011835}
   - component: {fileID: 1334971020778035239}
   - component: {fileID: 2327212472111873069}
+  - component: {fileID: 3319869709178814372}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -120,8 +121,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94aa28e9ce5dab44798ada995f4e0e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentHealth: 0
+  isDamaged: 0
   SelectedClass: 0
   CurrentStateString: 
+--- !u!114 &3319869709178814372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888347052891164433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b923c6ef3e16c4648a6129991f0ccf25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8060868903592702771
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
-  blinkDuration: 2
   blinkInterval: 0.3
   minAlpha: 0.2
   maxAlpha: 1

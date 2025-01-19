@@ -6,12 +6,14 @@ public class PlayerDamagedState : State
 {
 
     public PlayerDamagedState(Player owner) : base(owner) { name = "DAMAGED"; }
-    private bool isDamaged = false;
+    private SpriteManager sm;
     public override void Enter()
     {
-        isDamaged = true;
+        owner.isDamaged = true;
         owner.StartCoroutine(Timer());
         EventManager.HideWeapon();
+        sm = owner.GetComponentInChildren<SpriteManager>();
+        sm.PlayDamageEffect();
     }
 
     public override void Execute()
@@ -20,16 +22,15 @@ public class PlayerDamagedState : State
 
     public override void Exit()
     {
-        isDamaged = false;
         EventManager.ShowWeapon();
     }
 
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(owner.StunDuration);
-        if (isDamaged)
+        if (owner.isDamaged)
         {
-            owner.ChangeStates(new PlayerIdleState(owner)); // TODO: Better way to handle this
+            owner.ChangeStates(new PlayerIFramesState(owner)); // TODO: Better way to handle this
         }
     }
 

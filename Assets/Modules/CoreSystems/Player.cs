@@ -28,27 +28,28 @@ public class Player : Entity
     public float MoveSpeed { get; set; }
     public float StunDuration { get; set; }
     public float InvulnerableDuration { get; set; }
-
+    public bool isDamaged = false;
     [SerializeField] public PlayerClass SelectedClass;
 
     StateMachine StateMachine = new StateMachine();
 
     Dictionary<string, State> States = new Dictionary<string, State>();
-
     [SerializeField]
     public string CurrentStateString; // Just for debugging
 
     public State CurrentState;
     public void Start()
     {
-       MaxHealth = 20;
-       StunDuration = 2f;
-       CurrentHealth = MaxHealth;
-       CurrentMana = MaxMana;
-       PopulateStates();
-       EventManager.PlayerClassSelection(SelectedClass);
-       GetCurrentState(); // Debug Line
+        MaxHealth = 20;
+        StunDuration = 2f;
+        InvulnerableDuration = 1f;
+        CurrentHealth = MaxHealth;
+        CurrentMana = MaxMana;
+        PopulateStates();
+        EventManager.PlayerClassSelection(SelectedClass);
+        GetCurrentState(); // Debug Line
         Debug.Log(DictToString(States));
+        
 
     }
 
@@ -67,14 +68,18 @@ public class Player : Entity
 
     private void TakeDamage(int damage)
     {
-        if (CurrentHealth > 0) { 
-        CurrentHealth -= damage;
-        StateMachine.ChangeState(States["DAMAGED"]);
-        }
-        else
+        if (!isDamaged)
         {
-            CurrentHealth = 0;
-            StateMachine.ChangeState(States["DEATH"]);
+            if (CurrentHealth > 0)
+            {
+                CurrentHealth -= damage;
+                StateMachine.ChangeState(States["DAMAGED"]);
+            }
+            else
+            {
+                CurrentHealth = 0;
+                StateMachine.ChangeState(States["DEATH"]);
+            }
         }
     }
 
@@ -91,7 +96,7 @@ public class Player : Entity
         //StunDuration = PlayerData.BaseStunDuration.BaseValue - PlayerData.stats[StatType.Agility] * PlayerData.BaseStunDuration.Multiplier;
         //InvulnerableDuration = PlayerData.BaseInvulnerableDuration.BaseValue + PlayerData.stats[StatType.Agility] * PlayerData.BaseInvulnerableDuration.Multiplier;
     }
-    
+
     public void ChangeStates(State state) { StateMachine.ChangeState(state); }
     public void GetCurrentState() { CurrentState = StateMachine.CurrentState; CurrentStateString = StateMachine.CurrentState.name; } // Just for debugging
     public void PopulateStates()
@@ -111,7 +116,7 @@ public class Player : Entity
     {
         if (CurrentState != StateMachine.CurrentState) GetCurrentState();
         if (CurrentState == States["DAMAGED"]) return;
-        if(Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
         {
             StateMachine.ChangeState(States["IDLE"]);
         }
