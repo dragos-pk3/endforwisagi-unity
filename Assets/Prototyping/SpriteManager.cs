@@ -8,7 +8,7 @@ public class SpriteManager : MonoBehaviour
     [SerializeField] private Color damageColor = Color.red;
     private bool isBlinking = false;
 
-    [SerializeField] private float blinkDuration = 4f;
+    //[SerializeField] private float blinkDuration = 4f;
     [SerializeField] private float blinkInterval = 0.5f;
     [SerializeField] private float minAlpha = 0.12f;
     [SerializeField] private float maxAlpha = 1f;
@@ -20,9 +20,9 @@ public class SpriteManager : MonoBehaviour
         spriteRenderer.color = defaultColor;
     }
 
-    private IEnumerator TransparencyEffect()
+    private IEnumerator TransparencyEffect(float blinkDuration)
     {
-
+        isBlinking = true;
         float timer = 0f;
 
         while (timer < blinkDuration)
@@ -63,7 +63,7 @@ public class SpriteManager : MonoBehaviour
             yield return null;
         }
         spriteRenderer.color = defaultColor;
-        StartCoroutine(TransparencyEffect());
+        isBlinking = false;
     }
 
 
@@ -72,6 +72,14 @@ public class SpriteManager : MonoBehaviour
         if (!isBlinking)
         {
             StartCoroutine(DamageEffect());
+        }
+    }
+
+    public void PlayTransparencyEffect(float duration)
+    {
+        if (!isBlinking)
+        {
+            StartCoroutine(TransparencyEffect(duration));
         }
     }
 }
