@@ -30,9 +30,9 @@ public class Player : Entity
     public float InvulnerableDuration { get; set; }
     public bool isDamaged = false;
     [SerializeField] public PlayerClass SelectedClass;
-
+    BaseSpells Spells;
     StateMachine StateMachine = new StateMachine();
-
+    public NinjaWeaponBehaviour Weapon;
     Dictionary<string, State> States = new Dictionary<string, State>();
     [SerializeField]
     public string CurrentStateString; // Just for debugging
@@ -40,6 +40,8 @@ public class Player : Entity
     public State CurrentState;
     public void Start()
     {
+        Spells = GetComponent<BaseSpells>();
+        Weapon = FindFirstObjectByType<NinjaWeaponBehaviour>();
         MaxHealth = 20;
         StunDuration = 2f;
         InvulnerableDuration = 1f;
@@ -47,7 +49,6 @@ public class Player : Entity
         CurrentMana = MaxMana;
         PopulateStates();
         EventManager.PlayerClassSelection(SelectedClass);
-        GetCurrentState(); // Debug Line
         Debug.Log(DictToString(States));
         
 
@@ -125,6 +126,15 @@ public class Player : Entity
             StateMachine.ChangeState(States["MOVE"]);
         }
         StateMachine.Update();
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            EventManager.CreateClones();
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Weapon.DestroyClones();
+        }
     }
 
     private void FixedUpdate()

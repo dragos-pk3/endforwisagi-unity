@@ -9,6 +9,7 @@ public static class EventManager
     public static event Action<int> OnPlayerDamaged;
     public static event Action OnWeaponHide;
     public static event Action OnWeaponShow;
+    public static event Action OnCreateClones;
     #endregion
 
     #region Game Manager Triggers
@@ -41,6 +42,11 @@ public static class EventManager
     public static void ShowWeapon()
     {
         OnWeaponShow?.Invoke();
+    }
+
+    public static void CreateClones()
+    {
+        OnCreateClones?.Invoke();
     }
     #endregion
 }
