@@ -32,7 +32,7 @@ public class Player : Entity
     [SerializeField] public PlayerClass SelectedClass;
     BaseSpells Spells;
     StateMachine StateMachine = new StateMachine();
-    public NinjaWeaponBehaviour Weapon;
+    public WeaponBehaviour Weapon;
     Dictionary<string, State> States = new Dictionary<string, State>();
     [SerializeField]
     public string CurrentStateString; // Just for debugging
@@ -41,7 +41,7 @@ public class Player : Entity
     public void Start()
     {
         Spells = GetComponent<BaseSpells>();
-        Weapon = FindFirstObjectByType<NinjaWeaponBehaviour>();
+        Weapon = FindFirstObjectByType<WeaponBehaviour>();
         MaxHealth = 20;
         StunDuration = 2f;
         InvulnerableDuration = 1f;
