@@ -1,0 +1,5 @@
+*.shader linguist-language=ShaderLab
+*.shader linguist-vendored
+*.cginc linguist-language=ShaderLab
+*.cginc linguist-vendored
+*.cs linguist-language=C#
