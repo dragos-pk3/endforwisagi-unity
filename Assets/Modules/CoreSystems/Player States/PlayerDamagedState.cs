@@ -7,13 +7,16 @@ public class PlayerDamagedState : State
 
     public PlayerDamagedState(Player owner) : base(owner) { name = "DAMAGED"; }
     private SpriteManager sm;
+    private PlayerValues values;
     public override void Enter()
     {
         owner.isDamaged = true;
-        owner.StartCoroutine(Timer());
+        values = owner.GetComponent<PlayerValues>();
         EventManager.HideWeapon();
         sm = owner.GetComponentInChildren<SpriteManager>();
         sm.PlayDamageEffect();
+        Debug.Log("recovery: "+ values.RecoveryDuration);
+        owner.StartCoroutine(Timer());
     }
 
     public override void Execute()
@@ -27,7 +30,7 @@ public class PlayerDamagedState : State
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(owner.StunDuration);
+        yield return new WaitForSeconds(values.RecoveryDuration);
         if (owner.isDamaged)
         {
             owner.ChangeStates(new PlayerIFramesState(owner)); // TODO: Better way to handle this

@@ -7,10 +7,12 @@ public class PlayerMoveState : State
 
     private Rigidbody2D rb;
     private Vector2 direction;
+    private PlayerValues values;
 
     public override void Enter()
     {
         rb = owner.GetComponent<Rigidbody2D>();
+        values = owner.GetComponent<PlayerValues>();
     }
 
     public override void Execute()
@@ -18,12 +20,11 @@ public class PlayerMoveState : State
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
         direction = new Vector2(moveX, moveY).normalized;
-       
     }
 
     public override void FixedExecute()
     {
-        rb.MovePosition(rb.position + direction * owner.PlayerData.BaseMovementSpeed.BaseValue * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + direction * values.MovementSpeed * Time.fixedDeltaTime);
     }
     public override void Exit()
     {

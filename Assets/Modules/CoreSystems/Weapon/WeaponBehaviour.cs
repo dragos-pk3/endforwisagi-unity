@@ -1,14 +1,16 @@
 using System;
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class NinjaWeaponBehaviour : MonoBehaviour
+public class WeaponBehaviour : MonoBehaviour
 {
 
     public Transform player;
 
     private Transform sprite;
     private BoxCollider2D boxCollider;
-        
+    private List<WeaponBehaviour> clones = new List<WeaponBehaviour>();
     [Header("Offset & Orbit Settings")]
     [Tooltip("Initial offset from the player's position.")]
     public float distanceFromPlayer = 1f;
@@ -16,7 +18,6 @@ public class NinjaWeaponBehaviour : MonoBehaviour
     public float orbitSpeed = 90f;
 
     private float orbitAngle = 0f;
-
     private void Start()
     {
         sprite = transform.Find("Pivot"); // TODO: This is ugly
@@ -43,11 +44,13 @@ public class NinjaWeaponBehaviour : MonoBehaviour
     {
         EventManager.OnWeaponHide += HideWeapon;
         EventManager.OnWeaponShow += ShowWeapon;
+        EventManager.OnCreateClones += CreateClones;
     }
     private void OnDisable()
     {
         EventManager.OnWeaponHide -= HideWeapon;
         EventManager.OnWeaponShow -= ShowWeapon;
+        EventManager.OnCreateClones -= CreateClones;
 
     }
     private void ShowWeapon()
@@ -66,4 +69,25 @@ public class NinjaWeaponBehaviour : MonoBehaviour
         }
     }
 
+    public void CreateClones()
+    {
+        Debug.Log("Creating Clones");
+        for (int i = 1; i <= 5; i++)
+        {
+            GameObject clone = Instantiate(gameObject, transform.position, transform.rotation);
+            clone.tag = "Weapon";
+            WeaponBehaviour cloneBehaviour = clone.GetComponent<WeaponBehaviour>();
+            cloneBehaviour.orbitAngle = orbitAngle + (i * 72f); // 360 degrees / 5 clones = 72 degrees offset
+            clones.Add(cloneBehaviour);
+        }
+    }
+
+
+    public void DestroyClones()
+    {
+        foreach (var clone in clones)
+        {
+            Destroy(clone.gameObject);
+        }
+    }
 }

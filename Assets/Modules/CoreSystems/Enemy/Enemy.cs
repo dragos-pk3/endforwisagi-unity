@@ -10,8 +10,9 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private int _health = 3;
     private bool isDamaged = false;
-    private int damage = 10;
+    private int damage = -10;
     Vector2 direction = Vector2.zero;
+    public int givenExperience = 20;
     private SpriteManager spriteManager;
     private void Start()
     {
@@ -42,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "PlayerWeapon")
+        if (collision.gameObject.tag == "Weapon")
         {
             TakeDamage();
         }
@@ -70,6 +71,7 @@ public class Enemy : MonoBehaviour
             spriteManager.PlayDamageEffect();
             if (_health <= 0)
             {
+                EventManager.PlayerDefeatEnemy(givenExperience);
                 Destroy(gameObject);
             }
         }

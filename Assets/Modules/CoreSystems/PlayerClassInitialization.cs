@@ -2,12 +2,17 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class PlayerClassInitialization : MonoBehaviour
 {
+    BaseSpells baseSpells;
 
     //Class Data Structure for Modifiers and Abilities of each class
- 
+    private void Start()
+    {
+        baseSpells = GetComponent<BaseSpells>();   
+    }
     public void OnEnable()
     {
         EventManager.OnPlayerClassSelection += InitializePlayerClass;
@@ -23,7 +28,12 @@ public class PlayerClassInitialization : MonoBehaviour
         switch (playerClass)
         {
             case PlayerClass.Ninja:
-                Debug.Log($"He is a {playerClass}");
+
+                NinjaDiscipline ninja_q = new NinjaDiscipline("Ninja Discipline", 3f, 30);
+                baseSpells.firstSpell = ninja_q;
+                baseSpells.secondSpell = ninja_q;
+                baseSpells.thirdSpell = ninja_q;
+                Debug.Log($"ninja has {baseSpells.firstSpell.Name}");
 
                 break;
             case PlayerClass.Magus:
@@ -33,11 +43,5 @@ public class PlayerClassInitialization : MonoBehaviour
             case PlayerClass.Warrior:
                 break;
         }
-    }
-
-    private Dictionary<string, Ability> GetClassAbilities(Ability first, Ability second, Ability ultimate)
-    {
-        BaseSpells spells = new BaseSpells(first, second, ultimate);
-        return spells.GetSpells;
     }
 }
