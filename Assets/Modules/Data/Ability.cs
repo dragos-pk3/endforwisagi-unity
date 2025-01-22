@@ -17,10 +17,10 @@ public abstract class Ability
     }
     public virtual void Cast(PlayerValues owner)
     {
-        if (!isOnCooldown && (ManaCost <= owner.CurrentMana))
+        if (!isOnCooldown)
         {
             Debug.Log("Casting " + Name);
-            owner.CurrentMana -= ManaCost;
+            owner.UseMana(ManaCost);
             AbilityEffect(owner);
             owner.StartCoroutine(AbilityCooldown());
         }

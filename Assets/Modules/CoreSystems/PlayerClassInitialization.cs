@@ -30,7 +30,7 @@ public class PlayerClassInitialization : MonoBehaviour
         {
             case PlayerClass.Ninja:
 
-                abilities.Add(AbilityRank.Basic, new FiveStarNinja("Five Star Ninja",8,25));
+                abilities.Add(AbilityRank.Basic, new FiveStarNinja("Five Star Ninja",10,25));
                 abilities.Add(AbilityRank.Secondary, new NinjaDash("Dash", 3, 15));
                 abilities.Add(AbilityRank.Ultimate, new NinjaDiscipline("Ninja Discipline", 12, 50));
                 break;

@@ -14,6 +14,7 @@ public static class EventManager
     public static event Action<int> OnEnemyDefeat;
     public static event Action OnPlayerDefeated;
     public static event Action<AbilityRank> OnPlayerCastingAbility;
+    public static event Action OnNinjaBasicAbilityEnd;
     // Input 
     public static event Action OnPlayerMoveInput;
     public static event Action OnPlayerIdleInput;
@@ -78,6 +79,10 @@ public static class EventManager
         OnWeaponShow?.Invoke();
     }
 
+    public static void DestroyWeaponClones()
+    {
+        OnNinjaBasicAbilityEnd?.Invoke();
+    }
     public static void CreateClones()
     {
         OnCreateClones?.Invoke();
