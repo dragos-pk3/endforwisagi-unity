@@ -13,6 +13,11 @@ public static class EventManager
     public static event Action OnCreateClones;
     public static event Action<int> OnEnemyDefeat;
     public static event Action OnPlayerDefeated;
+    public static event Action<AbilityRank> OnPlayerCastingAbility;
+    // Input 
+    public static event Action OnPlayerMoveInput;
+    public static event Action OnPlayerIdleInput;
+    public static event Action OnPlayerAbilityInput;
     #endregion
 
     #region Game Manager Triggers
@@ -47,6 +52,18 @@ public static class EventManager
     public static void PlayerDefeated()
     {
         OnPlayerDefeated?.Invoke();
+    }
+    public static void PlayerIdle()
+    {
+        OnPlayerIdleInput?.Invoke();
+    }
+    public static void PlayerMoveInput()
+    {
+        OnPlayerMoveInput?.Invoke();
+    }
+    public static void PlayerCastingAbility(AbilityRank abilityRank)
+    {
+        OnPlayerCastingAbility?.Invoke(abilityRank);
     }
     #endregion
 

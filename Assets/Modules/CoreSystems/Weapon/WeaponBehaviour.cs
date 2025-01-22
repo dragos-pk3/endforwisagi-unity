@@ -71,7 +71,6 @@ public class WeaponBehaviour : MonoBehaviour
 
     public void CreateClones()
     {
-        Debug.Log("Creating Clones");
         for (int i = 1; i <= 5; i++)
         {
             GameObject clone = Instantiate(gameObject, transform.position, transform.rotation);
@@ -87,7 +86,7 @@ public class WeaponBehaviour : MonoBehaviour
     {
         foreach (var clone in clones)
         {
-            Destroy(clone.gameObject);
+            Destroy(clone.gameObject); // bug
         }
     }
 }

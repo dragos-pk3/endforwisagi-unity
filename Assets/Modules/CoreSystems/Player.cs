@@ -5,8 +5,7 @@ using System.Linq;
 using UnityEngine;
 public class Player : Entity
 {
-    
-    BaseSpells Spells;
+    [SerializeField] public PlayerClass selectedClass = PlayerClass.Ninja;
     StateMachine StateMachine = new StateMachine();
     public WeaponBehaviour Weapon;
     Dictionary<string, State> States = new Dictionary<string, State>();
@@ -16,22 +15,27 @@ public class Player : Entity
     public State CurrentState;
     public void Start()
     {
-        Spells = GetComponent<BaseSpells>();
         Weapon = FindFirstObjectByType<WeaponBehaviour>();
         PopulateStates();
         Debug.Log(DictToString(States));
+        EventManager.PlayerClassSelection(selectedClass);
     }
 
     public void OnEnable()
     {
         EventManager.OnPlayerDamaged += PlayerDamaged;
         EventManager.OnPlayerDefeated += PlayerDeath;
+        EventManager.OnPlayerMoveInput += PlayerMove;
+        EventManager.OnPlayerIdleInput += PlayerIdle;
     }
 
     public void OnDisable()
     {
         EventManager.OnPlayerDamaged -= PlayerDamaged;
         EventManager.OnPlayerDefeated -= PlayerDeath;
+        EventManager.OnPlayerMoveInput -= PlayerMove;
+        EventManager.OnPlayerIdleInput -= PlayerIdle;
+
     }
 
 
@@ -44,33 +48,31 @@ public class Player : Entity
         States.Add("DAMAGED", new PlayerDamagedState(this));
         States.Add("DEATH", new PlayerDeathState(this));
         //States.Add("UseAbility", new PlayerAttackState(gameObject));
-        //States.Add("Stun", new PlayerStunState(gameObject));
         States.Add("IFRAMES", new PlayerIFramesState(this));
-        //States.Add("Death", new PlayerDeathState(gameObject));
         StateMachine.ChangeState(States["IDLE"]);
     }
 
     private void Update()
     {
         if (CurrentState != StateMachine.CurrentState) GetCurrentState();
-        if ((Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0 ) && !isDamaged)
-        {
-             StateMachine.ChangeState(States["IDLE"]);
-        }
-        if ((Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) && !isDamaged)
-        {
-            StateMachine.ChangeState(States["MOVE"]);
-        }
+        //if ((Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0 ) && !isDamaged)
+        //{
+        //     StateMachine.ChangeState(States["IDLE"]);
+        //}
+        //if ((Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) && !isDamaged)
+        //{
+        //    StateMachine.ChangeState(States["MOVE"]);
+        //}
         StateMachine.Update();
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            EventManager.CreateClones();
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    EventManager.CreateClones();
 
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Weapon.DestroyClones();
-        }
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Weapon.DestroyClones();
+        //}
     }
 
     private void FixedUpdate()
@@ -104,5 +106,12 @@ public class Player : Entity
     {
         StateMachine.ChangeState(States["DEATH"]);
     }
-
+    private void PlayerMove()
+    {
+        if(!isDamaged) StateMachine.ChangeState(States["MOVE"]);
+    }
+    private void PlayerIdle()
+    {
+        if(!isDamaged) StateMachine.ChangeState(States["IDLE"]);
+    }
 }

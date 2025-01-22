@@ -15,7 +15,6 @@ public class PlayerDamagedState : State
         EventManager.HideWeapon();
         sm = owner.GetComponentInChildren<SpriteManager>();
         sm.PlayDamageEffect();
-        Debug.Log("recovery: "+ values.RecoveryDuration);
         owner.StartCoroutine(Timer());
     }
 

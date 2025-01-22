@@ -8,11 +8,13 @@ public class PlayerMoveState : State
     private Rigidbody2D rb;
     private Vector2 direction;
     private PlayerValues values;
+    private Camera mainCamera;
 
     public override void Enter()
     {
         rb = owner.GetComponent<Rigidbody2D>();
         values = owner.GetComponent<PlayerValues>();
+        mainCamera = Camera.main;
     }
 
     public override void Execute()
@@ -24,7 +26,14 @@ public class PlayerMoveState : State
 
     public override void FixedExecute()
     {
-        rb.MovePosition(rb.position + direction * values.MovementSpeed * Time.fixedDeltaTime);
+        Vector2 newPosition = rb.position + direction * values.MovementSpeed * Time.fixedDeltaTime;
+
+        Vector3 minScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.transform.position.z));
+        Vector3 maxScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.transform.position.z));
+
+        newPosition.x = Mathf.Clamp(newPosition.x, minScreenBounds.x, maxScreenBounds.x);
+        newPosition.y = Mathf.Clamp(newPosition.y, minScreenBounds.y, maxScreenBounds.y);
+        rb.MovePosition(newPosition);
     }
     public override void Exit()
     {
