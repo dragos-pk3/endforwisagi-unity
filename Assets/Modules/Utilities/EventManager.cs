@@ -7,9 +7,12 @@ public static class EventManager
     public static event Action OnPlayerStatChange;
     public static event Action<PlayerClass> OnPlayerClassSelection;
     public static event Action<int> OnPlayerDamaged;
+    public static event Action<int> OnPlayerDecreaseHealth;
     public static event Action OnWeaponHide;
     public static event Action OnWeaponShow;
     public static event Action OnCreateClones;
+    public static event Action<int> OnEnemyDefeat;
+    public static event Action OnPlayerDefeated;
     #endregion
 
     #region Game Manager Triggers
@@ -30,6 +33,20 @@ public static class EventManager
     public static void PlayerDamaged(int damage)
     {
         OnPlayerDamaged?.Invoke(damage);
+    }
+    public static void PlayerDecreaseHealth(int value)
+    {
+        OnPlayerDecreaseHealth?.Invoke(value);
+    }
+
+    public static void PlayerDefeatEnemy(int experience)
+    {
+        OnEnemyDefeat?.Invoke(experience);
+    }
+
+    public static void PlayerDefeated()
+    {
+        OnPlayerDefeated?.Invoke();
     }
     #endregion
 

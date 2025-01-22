@@ -85,7 +85,7 @@ public class WeaponBehaviour : MonoBehaviour
 
     public void DestroyClones()
     {
-        foreach (WeaponBehaviour clone in clones)
+        foreach (var clone in clones)
         {
             Destroy(clone.gameObject);
         }

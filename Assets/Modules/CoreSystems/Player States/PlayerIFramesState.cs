@@ -8,14 +8,18 @@ public class PlayerIFramesState : State
 
     private Rigidbody2D rb;
     private Vector2 direction;
-    private SpriteManager sm;
+    private SpriteManager spritemanager;
+    private PlayerValues values;
+    private float speedBonus = 3f; // remember to improve this
 
     public override void Enter()
     {
         rb = owner.GetComponent<Rigidbody2D>();
-        sm = owner.GetComponentInChildren<SpriteManager>();
+        values = owner.GetComponent<PlayerValues>();
+
+        spritemanager = owner.GetComponentInChildren<SpriteManager>();
         owner.StartCoroutine(Timer());
-        sm.PlayTransparencyEffect(owner.InvulnerableDuration);
+        spritemanager.PlayTransparencyEffect(values.InvulnerabilityDuration);
     }
 
     public override void Execute()
@@ -28,7 +32,7 @@ public class PlayerIFramesState : State
 
     public override void FixedExecute()
     {
-        rb.MovePosition(rb.position + direction * owner.PlayerData.BaseMovementSpeed.BaseValue * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + direction * (values.MovementSpeed + speedBonus) * Time.fixedDeltaTime);
     }
     public override void Exit()
     {
@@ -37,7 +41,7 @@ public class PlayerIFramesState : State
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(owner.InvulnerableDuration);
+        yield return new WaitForSeconds(values.InvulnerabilityDuration);
         if (owner.isDamaged)
         {
             owner.ChangeStates(new PlayerIdleState(owner));
