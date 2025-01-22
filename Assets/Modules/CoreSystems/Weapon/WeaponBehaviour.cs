@@ -45,12 +45,14 @@ public class WeaponBehaviour : MonoBehaviour
         EventManager.OnWeaponHide += HideWeapon;
         EventManager.OnWeaponShow += ShowWeapon;
         EventManager.OnCreateClones += CreateClones;
+        EventManager.OnNinjaBasicAbilityEnd += DestroyClones;
     }
     private void OnDisable()
     {
         EventManager.OnWeaponHide -= HideWeapon;
         EventManager.OnWeaponShow -= ShowWeapon;
         EventManager.OnCreateClones -= CreateClones;
+        EventManager.OnNinjaBasicAbilityEnd -= DestroyClones;
 
     }
     private void ShowWeapon()
@@ -71,11 +73,10 @@ public class WeaponBehaviour : MonoBehaviour
 
     public void CreateClones()
     {
-        Debug.Log("Creating Clones");
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i < 5; i++)
         {
             GameObject clone = Instantiate(gameObject, transform.position, transform.rotation);
-            clone.tag = "Weapon";
+            clone.tag = "WeaponClone";
             WeaponBehaviour cloneBehaviour = clone.GetComponent<WeaponBehaviour>();
             cloneBehaviour.orbitAngle = orbitAngle + (i * 72f); // 360 degrees / 5 clones = 72 degrees offset
             clones.Add(cloneBehaviour);
@@ -85,9 +86,13 @@ public class WeaponBehaviour : MonoBehaviour
 
     public void DestroyClones()
     {
-        foreach (var clone in clones)
+        for (int i = clones.Count - 1; i >= 0; i--)
         {
-            Destroy(clone.gameObject);
+            if (clones[i] != null && clones[i].tag == "WeaponClone")
+            {
+                Destroy(clones[i].gameObject);
+            }
+            clones.RemoveAt(i);
         }
     }
 }

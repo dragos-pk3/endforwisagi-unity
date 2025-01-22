@@ -6,21 +6,22 @@ using Unity.VisualScripting;
 
 public class PlayerClassInitialization : MonoBehaviour
 {
-    BaseSpells baseSpells;
-
-    //Class Data Structure for Modifiers and Abilities of each class
-    private void Start()
+    public Dictionary<AbilityRank, Ability> abilities = new Dictionary<AbilityRank, Ability>();
+    PlayerValues playerValues;
+    private void Awake()
     {
-        baseSpells = GetComponent<BaseSpells>();   
+        playerValues = GetComponent<PlayerValues>();
     }
     public void OnEnable()
     {
         EventManager.OnPlayerClassSelection += InitializePlayerClass;
+        EventManager.OnPlayerCastingAbility += CastAbility;
     }
-
     public void OnDisable()
     {
         EventManager.OnPlayerClassSelection -= InitializePlayerClass;
+        EventManager.OnPlayerCastingAbility += CastAbility;
+
     }
 
     public void InitializePlayerClass(PlayerClass playerClass)
@@ -29,12 +30,9 @@ public class PlayerClassInitialization : MonoBehaviour
         {
             case PlayerClass.Ninja:
 
-                NinjaDiscipline ninja_q = new NinjaDiscipline("Ninja Discipline", 3f, 30);
-                baseSpells.firstSpell = ninja_q;
-                baseSpells.secondSpell = ninja_q;
-                baseSpells.thirdSpell = ninja_q;
-                Debug.Log($"ninja has {baseSpells.firstSpell.Name}");
-
+                abilities.Add(AbilityRank.Basic, new FiveStarNinja("Five Star Ninja",10,25));
+                abilities.Add(AbilityRank.Secondary, new NinjaDash("Dash", 3, 15));
+                abilities.Add(AbilityRank.Ultimate, new NinjaDiscipline("Ninja Discipline", 12, 50));
                 break;
             case PlayerClass.Magus:
                 break;
@@ -44,4 +42,13 @@ public class PlayerClassInitialization : MonoBehaviour
                 break;
         }
     }
+
+    public void CastAbility(AbilityRank abilityRank)
+    {
+        if (abilities.ContainsKey(abilityRank))
+        {
+            abilities[abilityRank].Cast(playerValues);
+        }
+    }
+
 }

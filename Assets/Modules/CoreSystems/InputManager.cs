@@ -3,27 +3,35 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+
+    private void Awake()
+    {
+        
+    }
     void Update()
     {
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            // Move player
-            Debug.Log("Player is moving");
+            EventManager.PlayerMoveInput();
+        }
+        if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            EventManager.PlayerIdle();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            // First ability
+            EventManager.PlayerCastingAbility(AbilityRank.Basic);
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            // Second Ability
+            EventManager.PlayerCastingAbility(AbilityRank.Secondary);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // Ultimate
+            EventManager.PlayerCastingAbility(AbilityRank.Ultimate);
         }
 
 

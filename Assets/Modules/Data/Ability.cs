@@ -1,11 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
-[System.Serializable]
+
 public abstract class Ability
 {
     public string Name;
     public float Cooldown;
     public int ManaCost;
+    public bool isOnCooldown = false;
 
     public Ability(string name, float cooldown, int manaCost)
     {
@@ -13,6 +15,29 @@ public abstract class Ability
         Cooldown = cooldown;
         ManaCost = manaCost;
     }
-    public abstract void Cast(Player owner);
+    public virtual void Cast(PlayerValues owner)
+    {
+        if (!isOnCooldown)
+        {
+            Debug.Log("Casting " + Name);
+            owner.UseMana(ManaCost);
+            AbilityEffect(owner);
+            owner.StartCoroutine(AbilityCooldown());
+        }
+        else
+        {
+            Debug.Log($"Ability *{Name}* is on cooldown or not enough mana");
+        }
+    }
+    public abstract void AbilityEffect(PlayerValues owner);
+
+    private IEnumerator AbilityCooldown()
+    {
+        isOnCooldown = true;
+        yield return new WaitForSeconds(Cooldown);
+        isOnCooldown = false;
+    }
+
+
 
 }

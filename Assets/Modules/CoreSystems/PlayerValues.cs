@@ -96,7 +96,7 @@ public class PlayerValues : MonoBehaviour
     }
     private void SetPlayerManaRegenDelay()
     {
-        ManaRegenDelay = SetValue(baseValues.ManaRegenDelay, playerStats.Wisdom.value, 1);
+        ManaRegenDelay = SetValue(baseValues.ManaRegenDelay, playerStats.Wisdom.value, 0);
     }
     private void SetPlayerResistance()
     {
@@ -135,10 +135,10 @@ public class PlayerValues : MonoBehaviour
             CurrentMana = Mathf.Clamp(CurrentMana - mana, 0, MaxMana);
             if (isRegeneratingMana)
             {
-                StopCoroutine(nameof(RegenerateManaCoroutine));
+                StopCoroutine(RegenerateManaCoroutine());
                 isRegeneratingMana = false;
             }
-            StartCoroutine(nameof(RegenerateManaCoroutine));
+            StartCoroutine(RegenerateManaCoroutine());
         }
         else Debug.Log("Not enough mana");
     }
