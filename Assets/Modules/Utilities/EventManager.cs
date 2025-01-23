@@ -15,10 +15,12 @@ public static class EventManager
     public static event Action OnPlayerDefeated;
     public static event Action<AbilityRank> OnPlayerCastingAbility;
     public static event Action OnNinjaBasicAbilityEnd;
+    public static event Action OnStatusChange;
     // Input 
     public static event Action OnPlayerMoveInput;
     public static event Action OnPlayerIdleInput;
     public static event Action OnPlayerAbilityInput;
+
     #endregion
 
     #region Game Manager Triggers
@@ -65,6 +67,11 @@ public static class EventManager
     public static void PlayerCastingAbility(AbilityRank abilityRank)
     {
         OnPlayerCastingAbility?.Invoke(abilityRank);
+    }
+    
+    public static void UpdatePlayerValues()
+    {
+        OnStatusChange?.Invoke();
     }
     #endregion
 

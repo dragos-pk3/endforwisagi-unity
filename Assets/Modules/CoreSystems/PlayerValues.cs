@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerValues : MonoBehaviour
 {
     [SerializeField] public BasePlayerValues baseValues;
-    PlayerStats playerStats = new PlayerStats();
+    public PlayerStats playerStats = new PlayerStats();
     PlayerProgression playerProgression = new PlayerProgression(20);
 
     // ENDURANCE
@@ -175,11 +175,13 @@ public class PlayerValues : MonoBehaviour
     {
         EventManager.OnEnemyDefeat += GainExp;
         EventManager.OnPlayerDecreaseHealth += AdjustHealth;
+        EventManager.OnStatusChange += UpdateAllValues;
     }
 
     public void OnDisable()
     {
         EventManager.OnEnemyDefeat -= GainExp;
         EventManager.OnPlayerDecreaseHealth -= AdjustHealth;
+        EventManager.OnStatusChange -= UpdateAllValues;
     }
 }
