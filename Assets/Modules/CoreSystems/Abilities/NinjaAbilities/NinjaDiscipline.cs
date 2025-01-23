@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class NinjaDiscipline : Ability
@@ -6,6 +7,16 @@ public class NinjaDiscipline : Ability
 
     public override void AbilityEffect(PlayerValues owner)
     {
-        // raise player agility and update the stats then revert back to normal
+        owner.playerStats.Agility.value += 10;
+        EventManager.UpdatePlayerValues();
+        owner.StartCoroutine(RevertStats(owner));
+    }
+
+    private IEnumerator RevertStats(PlayerValues owner)
+    {
+        yield return new WaitForSeconds(5);
+        owner.playerStats.Agility.value -= 10;
+        EventManager.UpdatePlayerValues();
+
     }
 }
