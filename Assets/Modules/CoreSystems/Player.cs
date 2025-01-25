@@ -1,11 +1,13 @@
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 public class Player : Entity
 {
     [SerializeField] public PlayerClass selectedClass = PlayerClass.Ninja;
+    Rigidbody2D rb;
     StateMachine StateMachine = new StateMachine();
     public WeaponBehaviour Weapon;
     Dictionary<string, State> States = new Dictionary<string, State>();
@@ -13,8 +15,13 @@ public class Player : Entity
     public string CurrentStateString; // Just for debugging
     public bool isDamaged = false;
     public State CurrentState;
+
+    private float dashDistance = 3f;
+    private Vector3 dashDirection;
+    Vector3 newPosition;
     public void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         Weapon = FindFirstObjectByType<WeaponBehaviour>();
         PopulateStates();
         Debug.Log(DictToString(States));
@@ -27,6 +34,7 @@ public class Player : Entity
         EventManager.OnPlayerDefeated += PlayerDeath;
         EventManager.OnPlayerMoveInput += PlayerMove;
         EventManager.OnPlayerIdleInput += PlayerIdle;
+        EventManager.OnPlayerDashing += Dash;
     }
 
     public void OnDisable()
@@ -35,10 +43,29 @@ public class Player : Entity
         EventManager.OnPlayerDefeated -= PlayerDeath;
         EventManager.OnPlayerMoveInput -= PlayerMove;
         EventManager.OnPlayerIdleInput -= PlayerIdle;
+        EventManager.OnPlayerDashing -= Dash;
 
     }
 
+    private void Dash(float dashDistance)
+    {
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        Camera mainCamera = Camera.main;
+        Vector2 direction = new Vector2(moveX, moveY).normalized;
+        // Calculate the new position based on the dash distance and current direction
+        Vector2 dashPosition = rb.position + direction * dashDistance;
 
+        // Clamp the position to ensure it stays within screen bounds
+        Vector3 minScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.transform.position.z));
+        Vector3 maxScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.transform.position.z));
+
+        dashPosition.x = Mathf.Clamp(dashPosition.x, minScreenBounds.x, maxScreenBounds.x);
+        dashPosition.y = Mathf.Clamp(dashPosition.y, minScreenBounds.y, maxScreenBounds.y);
+
+        // Move the player directly to the new position
+        rb.MovePosition(dashPosition);
+    }
     public void ChangeStates(State state) { StateMachine.ChangeState(state); }
     public void GetCurrentState() { CurrentState = StateMachine.CurrentState; CurrentStateString = StateMachine.CurrentState.name; } // Just for debugging
     public void PopulateStates()
