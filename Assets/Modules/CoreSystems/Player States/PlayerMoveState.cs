@@ -9,6 +9,8 @@ public class PlayerMoveState : State
     private Vector2 direction;
     private PlayerValues values;
     private Camera mainCamera;
+    float moveX;
+    float moveY;
 
     public override void Enter()
     {
@@ -19,8 +21,8 @@ public class PlayerMoveState : State
 
     public override void Execute()
     {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
+        moveX = Input.GetAxisRaw("Horizontal");
+        moveY = Input.GetAxisRaw("Vertical");
         direction = new Vector2(moveX, moveY).normalized;
     }
 
@@ -38,6 +40,5 @@ public class PlayerMoveState : State
 
     public override void Exit()
     {
-
     }
 }

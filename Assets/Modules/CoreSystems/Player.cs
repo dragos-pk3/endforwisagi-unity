@@ -18,7 +18,7 @@ public class Player : Entity
     public bool isDamaged = false;
     public bool canMove = true;
     public State CurrentState;
-
+    public Vector2 lastDirection;
     private float dashDistance = 3f;
     private Vector3 dashDirection;
     Vector3 newPosition;
@@ -100,7 +100,8 @@ public class Player : Entity
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-        Vector2 direction = new Vector2(moveX, moveY).normalized;
+
+        Vector2 direction = (moveX == 0 && moveY == 0) ? new Vector2(1,0) : new Vector2(moveX, moveY).normalized;
 
         StateMachine.ChangeState(States["DASH"]);
         StartCoroutine(DashCoroutine(direction));
