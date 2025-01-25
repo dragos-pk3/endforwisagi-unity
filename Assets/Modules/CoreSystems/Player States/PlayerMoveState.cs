@@ -35,6 +35,7 @@ public class PlayerMoveState : State
         newPosition.y = Mathf.Clamp(newPosition.y, minScreenBounds.y, maxScreenBounds.y);
         rb.MovePosition(newPosition);
     }
+
     public override void Exit()
     {
 

@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Weapon" || collision.gameObject.tag == "WeaponClone")
+        if (collision.gameObject.tag == "Weapon" || collision.gameObject.tag == "WeaponClone" || (collision.gameObject.tag == "Bomb" && collision.gameObject.GetComponent<Bomb>().isExploding))
         {
             TakeDamage();
         }

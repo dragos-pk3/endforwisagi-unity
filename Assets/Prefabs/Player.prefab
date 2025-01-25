@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8961730856523720466}
   - component: {fileID: 4607037352486011835}
   - component: {fileID: 1334971020778035239}
+  - component: {fileID: 9098062864468759773}
   - component: {fileID: 2327212472111873069}
   - component: {fileID: 3319869709178814372}
   - component: {fileID: 5406594792449735782}
@@ -111,6 +112,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9098062864468759773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888347052891164433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419ebb9a4f777b44c852448986cd7022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2327212472111873069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94aa28e9ce5dab44798ada995f4e0e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedClass: 0
   Weapon: {fileID: 0}
   CurrentStateString: 
   isDamaged: 0
