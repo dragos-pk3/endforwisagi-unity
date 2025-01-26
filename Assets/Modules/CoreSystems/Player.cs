@@ -1,8 +1,10 @@
 
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 public class Player : Entity
 {
@@ -14,8 +16,9 @@ public class Player : Entity
     [SerializeField]
     public string CurrentStateString; // Just for debugging
     public bool isDamaged = false;
+    public bool canMove = true;
     public State CurrentState;
-
+    public Vector2 lastDirection;
     private float dashDistance = 3f;
     private Vector3 dashDirection;
     Vector3 newPosition;
@@ -24,7 +27,6 @@ public class Player : Entity
         rb = GetComponent<Rigidbody2D>();
         Weapon = FindFirstObjectByType<WeaponBehaviour>();
         PopulateStates();
-        Debug.Log(DictToString(States));
         EventManager.PlayerClassSelection(selectedClass);
     }
 
@@ -34,7 +36,7 @@ public class Player : Entity
         EventManager.OnPlayerDefeated += PlayerDeath;
         EventManager.OnPlayerMoveInput += PlayerMove;
         EventManager.OnPlayerIdleInput += PlayerIdle;
-        EventManager.OnPlayerDashing += Dash;
+        EventManager.OnPlayerDashing += PlayerDash;
     }
 
     public void OnDisable()
@@ -43,29 +45,10 @@ public class Player : Entity
         EventManager.OnPlayerDefeated -= PlayerDeath;
         EventManager.OnPlayerMoveInput -= PlayerMove;
         EventManager.OnPlayerIdleInput -= PlayerIdle;
-        EventManager.OnPlayerDashing -= Dash;
+        EventManager.OnPlayerDashing -= PlayerDash;
 
     }
 
-    private void Dash(float dashDistance)
-    {
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-        Camera mainCamera = Camera.main;
-        Vector2 direction = new Vector2(moveX, moveY).normalized;
-        // Calculate the new position based on the dash distance and current direction
-        Vector2 dashPosition = rb.position + direction * dashDistance;
-
-        // Clamp the position to ensure it stays within screen bounds
-        Vector3 minScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.transform.position.z));
-        Vector3 maxScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.transform.position.z));
-
-        dashPosition.x = Mathf.Clamp(dashPosition.x, minScreenBounds.x, maxScreenBounds.x);
-        dashPosition.y = Mathf.Clamp(dashPosition.y, minScreenBounds.y, maxScreenBounds.y);
-
-        // Move the player directly to the new position
-        rb.MovePosition(dashPosition);
-    }
     public void ChangeStates(State state) { StateMachine.ChangeState(state); }
     public void GetCurrentState() { CurrentState = StateMachine.CurrentState; CurrentStateString = StateMachine.CurrentState.name; } // Just for debugging
     public void PopulateStates()
@@ -74,7 +57,7 @@ public class Player : Entity
         States.Add("MOVE", new PlayerMoveState(this));
         States.Add("DAMAGED", new PlayerDamagedState(this));
         States.Add("DEATH", new PlayerDeathState(this));
-        //States.Add("UseAbility", new PlayerAttackState(gameObject));
+        States.Add("DASH", new PlayerDashState(this));
         States.Add("IFRAMES", new PlayerIFramesState(this));
         StateMachine.ChangeState(States["IDLE"]);
     }
@@ -82,42 +65,14 @@ public class Player : Entity
     private void Update()
     {
         if (CurrentState != StateMachine.CurrentState) GetCurrentState();
-        //if ((Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0 ) && !isDamaged)
-        //{
-        //     StateMachine.ChangeState(States["IDLE"]);
-        //}
-        //if ((Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0) && !isDamaged)
-        //{
-        //    StateMachine.ChangeState(States["MOVE"]);
-        //}
-        StateMachine.Update();
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    EventManager.CreateClones();
 
-        //}
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    Weapon.DestroyClones();
-        //}
+        StateMachine.Update();
+
     }
 
     private void FixedUpdate()
     {
         StateMachine.FixedUpdate();
-    }
-
-    public string DictToString(Dictionary<string, State> dict)
-    {
-        string output = "";
-        foreach (KeyValuePair<string, State> kvp in dict)
-        {
-            string key = kvp.Key;
-            object value = kvp.Value;
-            string pair = key + ": " + value.ToString() + "\n";
-            output += pair;
-        }
-        return output;
     }
 
     private void PlayerDamaged(int damage)
@@ -135,10 +90,43 @@ public class Player : Entity
     }
     private void PlayerMove()
     {
-        if(!isDamaged) StateMachine.ChangeState(States["MOVE"]);
+        if(!isDamaged && canMove) StateMachine.ChangeState(States["MOVE"]);
     }
     private void PlayerIdle()
     {
         if(!isDamaged) StateMachine.ChangeState(States["IDLE"]);
+    }
+    private void PlayerDash()
+    {
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+
+        Vector2 direction = (moveX == 0 && moveY == 0) ? new Vector2(1,0) : new Vector2(moveX, moveY).normalized;
+
+        StateMachine.ChangeState(States["DASH"]);
+        StartCoroutine(DashCoroutine(direction));
+    }
+    public IEnumerator DashCoroutine(Vector2 dir)
+    {
+        canMove = false;
+        float elapsed = 0f;
+        Vector2 dashPosition = rb.position + dir * dashDistance;
+        float duration = 0.3f;
+        Camera mainCamera = Camera.main;
+
+        Vector3 minScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.transform.position.z));
+        Vector3 maxScreenBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.transform.position.z));
+
+        dashPosition.x = Mathf.Clamp(dashPosition.x, minScreenBounds.x, maxScreenBounds.x);
+        dashPosition.y = Mathf.Clamp(dashPosition.y, minScreenBounds.y, maxScreenBounds.y);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            rb.MovePosition(Vector2.Lerp(rb.position, dashPosition, elapsed / duration));
+            yield return null;
+        }
+        canMove = true;
+        StateMachine.ChangeState(States["IDLE"]);
     }
 }

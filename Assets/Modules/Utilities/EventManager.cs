@@ -17,7 +17,7 @@ public static class EventManager
     public static event Action OnNinjaBasicAbilityEnd;
     public static event Action OnStatusChange;
     public static event Action<PlayerValues> OnSpawnBomb;
-    public static event Action<float> OnPlayerDashing;
+    public static event Action OnPlayerDashing;
     // Input 
     public static event Action OnPlayerMoveInput;
     public static event Action OnPlayerIdleInput;
@@ -81,9 +81,9 @@ public static class EventManager
         OnSpawnBomb?.Invoke(playerValues);
     }
 
-    public static void PlayerDash(float distance)
+    public static void PlayerDash()
     {
-        OnPlayerDashing?.Invoke(distance);
+        OnPlayerDashing?.Invoke();
     }
     #endregion
 
