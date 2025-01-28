@@ -157,9 +157,14 @@ public class PlayerValues : MonoBehaviour
     public void AdjustHealth(int amount)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaxHealth);
+        EventManager.PlayerHealthChange(HealthPercentage());
         if (CurrentHealth == 0) EventManager.PlayerDefeated();
     }
-
+    public float HealthPercentage()
+    {
+        if (MaxHealth == 0) return 0f; // Avoid division by zero
+        return (float)CurrentHealth / MaxHealth;
+    }
     public void RegenMana()
     {
         CurrentMana = Mathf.Clamp(CurrentMana + ManaRegenRate, 0, MaxMana);
