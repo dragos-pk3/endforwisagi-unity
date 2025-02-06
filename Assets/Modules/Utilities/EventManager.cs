@@ -22,7 +22,8 @@ public static class EventManager
     public static event Action OnPlayerMoveInput;
     public static event Action OnPlayerIdleInput;
     public static event Action OnPlayerAbilityInput;
-
+    // UI
+    public static event Action<float> OnPlayerHealthChange;
     #endregion
 
     #region Game Manager Triggers
@@ -105,6 +106,13 @@ public static class EventManager
     public static void CreateClones()
     {
         OnCreateClones?.Invoke();
+    }
+    #endregion
+
+    #region UI
+    public static void PlayerHealthChange(float amount)
+    {
+        OnPlayerHealthChange?.Invoke(amount);
     }
     #endregion
 }
